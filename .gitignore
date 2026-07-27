@@ -1,0 +1,16 @@
+node_modules
+src/abis/
+
+# production build output
+/build
+
+# logs
+*.log
+npm-debug.log*
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
