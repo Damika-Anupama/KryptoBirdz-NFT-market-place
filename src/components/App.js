@@ -17,48 +17,49 @@ class App extends Component {
     await this.loadWeb3();
     await this.loadBlockchainData();
   }
-  // first check the  etherem provider
+  // first check the ethereum provider
   async loadWeb3() {
     const provider = await detectEthereumProvider();
     if (provider) {
       console.log("Ethereum successfully detected!");
+      // Request account access so the dApp can read the connected account.
+      await provider.request({ method: "eth_requestAccounts" });
       window.web3 = new Web3(provider);
     } else {
       console.log("Please install MetaMask!");
+      window.alert("Please install MetaMask to use this dApp.");
     }
   }
 
   async loadBlockchainData() {
     const web3 = window.web3;
-
-    console.log("Web3 exists?", web3);
-    console.log("Web3.eth.net exists?", web3.eth.net);
+    if (!web3) {
+      return; // No provider: nothing to load.
+    }
 
     const accounts = await web3.eth.getAccounts();
     this.setState({ account: accounts[0] }); // Get the first account
-    console.log(this.state.account);
 
-    const networkId = await web3.eth.net.getId();
+    // web3 v4 returns network id as a BigInt; the ABI network map is keyed by string.
+    const networkId = (await web3.eth.net.getId()).toString();
     const networkData = KryptoBirdz.networks[networkId];
     if (networkData) {
-      var abi = KryptoBirdz.abi;
-      var address = networkData.address;
-      var contract = new web3.eth.Contract(abi, address);
+      const abi = KryptoBirdz.abi;
+      const address = networkData.address;
+      const contract = new web3.eth.Contract(abi, address);
       this.setState({ contract: contract });
-      console.log(this.state.contract);
 
-      // Get the total supply of tokens
-      var totalSupply = await contract.methods.totalSupply().call();
+      // Get the total supply of tokens (BigInt in web3 v4).
+      const totalSupply = Number(await contract.methods.totalSupply().call());
       this.setState({ totalSupply: totalSupply });
 
-      // Load Birds
-      for (let i = 1; i <= totalSupply; i++) {
-        var bird = await contract.methods.kryptoBirdz(i - 1).call();
-        this.setState({
-          birds: [...this.state.birds, bird],
-        });
+      // Load Birds, aggregating first to avoid stale-state render thrashing.
+      const birds = [];
+      for (let i = 0; i < totalSupply; i++) {
+        const bird = await contract.methods.kryptoBirdz(i).call();
+        birds.push(bird);
       }
-      console.log(this.state.birds);
+      this.setState({ birds });
     } else {
       window.alert("Smart contract not deployed to detected network.");
     }
@@ -68,10 +69,14 @@ class App extends Component {
     this.state.contract.methods
       .mint(kryptoBird)
       .send({ from: this.state.account })
-      .once("receipt", (receipt) => {
-        this.setState({
-          birds: [...this.state.birds, kryptoBird],
-        });
+      .on("receipt", () => {
+        this.setState((prevState) => ({
+          birds: [...prevState.birds, kryptoBird],
+        }));
+      })
+      .on("error", (error) => {
+        console.error("Mint failed:", error);
+        window.alert("Minting failed. See console for details.");
       });
   };
 
