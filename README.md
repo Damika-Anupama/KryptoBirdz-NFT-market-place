@@ -8,16 +8,19 @@
 > Looking for the full dApp (Solidity contracts + Truffle + web3)? See the
 > [**`main` branch**](https://github.com/Damika-s-Play-Ground/KryptoBirdz-NFT-market-place/tree/main).
 
-<p align="center">
+<!-- LIVE-DEMO -->
+## 🔗 Live demo
+
+### ▶︎ **https://damika-s-play-ground.github.io/KryptoBirdz-NFT-market-place/**
+
+_Deployed from this branch to GitHub Pages — no wallet, no setup, just click._
+
+<p align="left">
   <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FDamika-s-Play-Ground%2FKryptoBirdz-NFT-market-place%2Ftree%2Ffrontend-only&project-name=kryptobirdz-demo&repository-name=kryptobirdz-demo">
     <img src="https://vercel.com/button" alt="Deploy with Vercel" />
   </a>
+  &nbsp;<em>(one-click mirror on Vercel, optional)</em>
 </p>
-
-<!-- LIVE-DEMO -->
-### 🔗 Live demo
-
-**https://kryptobirdz-demo.vercel.app** _(update this to your deployment URL after the first deploy)_
 
 ---
 
@@ -47,7 +50,7 @@ backed by an on-chain **ERC-721** contract accessed through **web3.js**.
 | Framework | React 17 + Create React App 5 |
 | Styling | Hand-written CSS design system (no UI framework) |
 | Data | Static local catalogue (`src/data/birdz.js`) |
-| Hosting | Vercel (static build) |
+| Hosting | GitHub Pages (Vercel-ready too) |
 
 No `web3`, `bootstrap`, or `mdb` dependencies — the demo bundle is ~46 kB
 gzipped.
@@ -69,27 +72,30 @@ Production build:
 npm run build      # outputs static assets to ./build
 ```
 
-## ☁️ Deploy to Vercel
+## ☁️ Deployment
 
-**One click:** use the **Deploy with Vercel** button above — it imports this
-branch, and Vercel auto-detects the Create React App preset.
-
-**Manual import:**
-
-1. Go to <https://vercel.com/new> and import this GitHub repository.
-2. Set the **Production Branch** to `frontend-only` (Project → Settings → Git).
-3. Framework preset **Create React App** is detected automatically
-   (build `npm run build`, output `build`). The included [`vercel.json`](./vercel.json)
-   pins these settings and the SPA rewrite.
-4. Deploy — then paste the resulting URL into the **Live demo** section above.
-
-**Vercel CLI:**
+This branch is **live on GitHub Pages**, published straight from the built
+assets. To (re)deploy after changes:
 
 ```bash
-npm i -g vercel
-vercel            # preview deploy
-vercel --prod     # production deploy
+npm run deploy     # runs the build, then pushes ./build to the gh-pages branch
 ```
+
+That uses [`gh-pages`](https://www.npmjs.com/package/gh-pages) (a dev
+dependency) to publish to the `gh-pages` branch, which GitHub serves at the
+Live demo URL above. Assets use relative paths (`"homepage": "."`), so the
+site works under the `/KryptoBirdz-NFT-market-place/` project path without
+extra config.
+
+### Alternative: Vercel
+
+Prefer Vercel? Use the **Deploy with Vercel** button near the top, or:
+
+1. Import this repo at <https://vercel.com/new> and set the production branch
+   to `frontend-only`.
+2. The **Create React App** preset is auto-detected; [`vercel.json`](./vercel.json)
+   pins the build command, output dir, and SPA rewrite.
+3. Deploy.
 
 ## 📁 Structure
 
