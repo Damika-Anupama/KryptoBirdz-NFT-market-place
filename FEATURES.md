@@ -51,4 +51,4 @@ Recompute this table any time with: `node scripts/features-progress.mjs`
 
 | Wave | Closed | Shipped | Deploy | Live check |
 |---|---|---|---|---|
-| 0 | _in progress_ | stack migration + catalog | — | — |
+| 0 | 2026-07-27 | Vite 6 + React 18 + TS migration · vitest suite (14) + pre-push/pre-deploy gates · this 980-item catalog | gh-pages (`index-DCi7ivj9.js`) | OK — build.json wave:0 confirmed live |

@@ -43,16 +43,26 @@ Everything runs in **demo mode**: the catalogue is bundled as static data, and
 Buy / Like / Connect Wallet actions are simulated. In the full dApp these are
 backed by an on-chain **ERC-721** contract accessed through **web3.js**.
 
+## 🗺️ Roadmap: 980 tracked micro-features
+
+This branch is being grown into a full product demo through a
+**[980-item feature catalog](./FEATURES.md)** across 15 epics (marketplace,
+item detail, simulated wallet & economy, rarity analytics, search, social,
+gamification, accessibility, i18n, PWA, …), shipped in verified waves — each
+wave is built, tested, deployed, and live-checked before its items count as
+done. Current progress lives in [FEATURES.md](./FEATURES.md).
+
 ## 🧱 Tech stack
 
 | | |
 |---|---|
-| Framework | React 17 + Create React App 5 |
+| Framework | React 18 + Vite 6 + TypeScript (strict) |
 | Styling | Hand-written CSS design system (no UI framework) |
-| Data | Static local catalogue (`src/data/birdz.js`) |
+| Data | Typed static catalogue (`src/data/birdz.ts`), deterministic simulation |
+| Testing | Vitest + Testing Library; pre-push + pre-deploy verify gates |
 | Hosting | GitHub Pages (Vercel-ready too) |
 
-No `web3`, `bootstrap`, or `mdb` dependencies — the demo bundle is ~46 kB
+No `web3`, `bootstrap`, or `mdb` dependencies — the demo bundle is ~50 kB
 gzipped.
 
 ## 🚀 Run locally
@@ -60,16 +70,18 @@ gzipped.
 ```bash
 git clone -b frontend-only https://github.com/Damika-s-Play-Ground/KryptoBirdz-NFT-market-place.git
 cd KryptoBirdz-NFT-market-place
-npm install --ignore-scripts
-npm start
+npm install
+npm run dev
 ```
 
-Then open <http://localhost:3000>.
+Then open the printed local URL (default <http://localhost:5173>).
 
-Production build:
+Checks and production build:
 
 ```bash
-npm run build      # outputs static assets to ./build
+npm run verify     # typecheck + full test suite
+npm run build      # outputs static assets to ./dist
+npm run preview    # serve the production build locally
 ```
 
 ## ☁️ Deployment
@@ -78,14 +90,14 @@ This branch is **live on GitHub Pages**, published straight from the built
 assets. To (re)deploy after changes:
 
 ```bash
-npm run deploy     # runs the build, then pushes ./build to the gh-pages branch
+npm run deploy     # verify + build, then push ./dist to the gh-pages branch
 ```
 
 That uses [`gh-pages`](https://www.npmjs.com/package/gh-pages) (a dev
 dependency) to publish to the `gh-pages` branch, which GitHub serves at the
-Live demo URL above. Assets use relative paths (`"homepage": "."`), so the
+Live demo URL above. Assets use relative paths (Vite `base: "./"`), so the
 site works under the `/KryptoBirdz-NFT-market-place/` project path without
-extra config.
+extra config, and the deploy is gated: type errors or failing tests abort it.
 
 ### Alternative: Vercel
 
@@ -93,22 +105,30 @@ Prefer Vercel? Use the **Deploy with Vercel** button near the top, or:
 
 1. Import this repo at <https://vercel.com/new> and set the production branch
    to `frontend-only`.
-2. The **Create React App** preset is auto-detected; [`vercel.json`](./vercel.json)
+2. The **Vite** preset is auto-detected; [`vercel.json`](./vercel.json)
    pins the build command, output dir, and SPA rewrite.
 3. Deploy.
 
 ## 📁 Structure
 
 ```
-public/            # index.html, manifest, favicon
+index.html           # Vite entry (root)
+public/              # favicon, manifest, build.json wave stamp
 src/
   components/
-    App.js         # the whole demo UI
-    App.css        # design system
-  crypto-birdz/    # 15 bird artwork PNGs
-  data/birdz.js    # demo catalogue + rarity/stats
-  index.js
-vercel.json        # Vercel build + SPA config
+    App.tsx          # the demo UI
+    App.css          # design system
+    __tests__/       # component smoke tests
+  crypto-birdz/      # 15 bird artwork PNGs
+  data/
+    birdz.ts         # typed catalogue + rarity/stats
+    buildInfo.ts     # wave stamp shown in the footer
+  main.tsx           # React 18 entry
+features/            # the 980-item feature catalog (15 epic files)
+FEATURES.md          # catalog index, wave plan, wave log
+scripts/features-progress.mjs   # recomputes the progress table
+vite.config.ts       # base "./", vitest config
+vercel.json          # Vercel build + SPA config
 ```
 
 ## 📄 License
