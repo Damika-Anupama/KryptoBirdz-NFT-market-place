@@ -1,13 +1,26 @@
-import React, { useMemo, useState, useCallback } from "react";
-import { BIRDZ, RARITY, STATS } from "../data/birdz";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { BIRDZ, RARITY, STATS, isRarityTier, type Bird } from "../data/birdz";
 import "./App.css";
 
 const REPO_URL =
   "https://github.com/Damika-s-Play-Ground/KryptoBirdz-NFT-market-place";
 
-const FILTERS = ["All", "Legendary", "Epic", "Rare", "Common"];
+const FILTERS = ["All", "Legendary", "Epic", "Rare", "Common"] as const;
+type Filter = (typeof FILTERS)[number];
 
-function Stat({ label, value, suffix }) {
+interface StatProps {
+  label: string;
+  value: string | number;
+  suffix?: string;
+}
+
+function Stat({ label, value, suffix }: StatProps) {
   return (
     <div className="stat">
       <span className="stat__value">
@@ -19,12 +32,17 @@ function Stat({ label, value, suffix }) {
   );
 }
 
-function BirdCard({ bird, onAction }) {
+interface BirdCardProps {
+  bird: Bird;
+  onAction: (message: string) => void;
+}
+
+function BirdCard({ bird, onAction }: BirdCardProps) {
   const accent = RARITY[bird.rarity].color;
   return (
     <article
       className="card"
-      style={{ "--accent": accent }}
+      style={{ "--accent": accent } as React.CSSProperties}
       tabIndex={0}
     >
       <div className="card__media">
@@ -62,7 +80,11 @@ function BirdCard({ bird, onAction }) {
           </div>
           <button
             className="btn btn--buy"
-            onClick={() => onAction(`Demo: “Buy ${bird.name}” — connect a wallet in the full dApp`)}
+            onClick={() =>
+              onAction(
+                `Demo: “Buy ${bird.name}” — connect a wallet in the full dApp`
+              )
+            }
           >
             Buy now
           </button>
@@ -73,15 +95,18 @@ function BirdCard({ bird, onAction }) {
 }
 
 export default function App() {
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState<Filter>("All");
   const [query, setQuery] = useState("");
-  const [toast, setToast] = useState(null);
+  const [toast, setToast] = useState<string | null>(null);
+  const toastTimer = useRef<number | undefined>(undefined);
 
-  const showToast = useCallback((message) => {
-    setToast({ message, id: message + Math.floor(performance.now()) });
-    window.clearTimeout(showToast._t);
-    showToast._t = window.setTimeout(() => setToast(null), 2600);
+  const showToast = useCallback((message: string) => {
+    setToast(message);
+    window.clearTimeout(toastTimer.current);
+    toastTimer.current = window.setTimeout(() => setToast(null), 2600);
   }, []);
+
+  useEffect(() => () => window.clearTimeout(toastTimer.current), []);
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -165,11 +190,7 @@ export default function App() {
           <div className="hero__stats">
             <Stat label="Items" value={STATS.items} />
             <Stat label="Owners" value={STATS.owners} />
-            <Stat
-              label="Floor"
-              value={STATS.floor.toFixed(2)}
-              suffix=" ETH"
-            />
+            <Stat label="Floor" value={STATS.floor.toFixed(2)} suffix=" ETH" />
             <Stat
               label="Volume"
               value={STATS.volume.toFixed(1)}
@@ -180,9 +201,21 @@ export default function App() {
 
         <div className="hero__art" aria-hidden="true">
           <div className="hero__stack">
-            <img src={BIRDZ[4].image} alt="" className="hero__card hero__card--back" />
-            <img src={BIRDZ[14].image} alt="" className="hero__card hero__card--mid" />
-            <img src={BIRDZ[0].image} alt="" className="hero__card hero__card--front" />
+            <img
+              src={BIRDZ[4].image}
+              alt=""
+              className="hero__card hero__card--back"
+            />
+            <img
+              src={BIRDZ[14].image}
+              alt=""
+              className="hero__card hero__card--mid"
+            />
+            <img
+              src={BIRDZ[0].image}
+              alt=""
+              className="hero__card hero__card--front"
+            />
           </div>
         </div>
       </section>
@@ -213,7 +246,9 @@ export default function App() {
                   aria-selected={filter === f}
                   className={`filter ${filter === f ? "is-active" : ""}`}
                   style={
-                    RARITY[f] ? { "--accent": RARITY[f].color } : undefined
+                    isRarityTier(f)
+                      ? ({ "--accent": RARITY[f].color } as React.CSSProperties)
+                      : undefined
                   }
                   onClick={() => setFilter(f)}
                 >
@@ -286,7 +321,7 @@ export default function App() {
 
       {/* TOAST */}
       <div className={`toast ${toast ? "is-visible" : ""}`} role="status">
-        {toast?.message}
+        {toast}
       </div>
     </div>
   );

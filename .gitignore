@@ -2,7 +2,7 @@ node_modules
 src/abis/
 
 # production build output
-/build
+/dist
 
 # logs
 *.log

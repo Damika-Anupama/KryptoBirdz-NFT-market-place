@@ -19,15 +19,39 @@ import k13 from "../crypto-birdz/k13.png";
 import k14 from "../crypto-birdz/k14.png";
 import k15 from "../crypto-birdz/k15.png";
 
+export type RarityTier = "Common" | "Rare" | "Epic" | "Legendary";
+
+export interface RarityInfo {
+  label: RarityTier;
+  color: string;
+  weight: number;
+}
+
+export interface Bird {
+  id: number;
+  tokenId: string;
+  name: string;
+  image: string;
+  rarity: RarityTier;
+  price: number;
+  traits: readonly string[];
+  owner: string;
+  likes: number;
+}
+
 const IMAGES = [k1, k2, k3, k4, k5, k6, k7, k8, k9, k10, k11, k12, k13, k14, k15];
 
 // Rarity tiers drive the accent colour and the visual ribbon on each card.
-export const RARITY = {
+export const RARITY: Record<RarityTier, RarityInfo> = {
   Common: { label: "Common", color: "#7d8ba1", weight: 1 },
   Rare: { label: "Rare", color: "#3ba9ff", weight: 2 },
   Epic: { label: "Epic", color: "#a855f7", weight: 3 },
   Legendary: { label: "Legendary", color: "#f5b74a", weight: 4 },
 };
+
+export function isRarityTier(value: string): value is RarityTier {
+  return value in RARITY;
+}
 
 const NAMES = [
   "Celestial Songbird", "Neon Nightjar", "Ember Falcon", "Frost Sparrow",
@@ -36,7 +60,7 @@ const NAMES = [
   "Crimson Macaw", "Glacier Heron", "Prism Peacock",
 ];
 
-const TRAITS = [
+const TRAITS: readonly (readonly string[])[] = [
   ["Iridescent", "Skyborn", "Calm"], ["Glitchcore", "Nocturnal", "Electric"],
   ["Molten", "Fierce", "Winged"], ["Crystalline", "Serene", "Frostbound"],
   ["Radiant", "Reborn", "Blazing"], ["Shadow", "Ancient", "Silent"],
@@ -48,7 +72,7 @@ const TRAITS = [
 ];
 
 // Deterministic pseudo-values so the catalogue is stable across reloads/builds.
-const RARITY_BY_INDEX = [
+const RARITY_BY_INDEX: readonly RarityTier[] = [
   "Legendary", "Rare", "Epic", "Common", "Legendary",
   "Epic", "Common", "Rare", "Epic", "Rare",
   "Common", "Epic", "Rare", "Common", "Legendary",
@@ -59,7 +83,7 @@ const PRICES = [
   0.55, 2.95, 1.6, 0.72, 6.1,
 ];
 
-export const BIRDZ = IMAGES.map((image, i) => ({
+export const BIRDZ: readonly Bird[] = IMAGES.map((image, i) => ({
   id: i + 1,
   tokenId: `#${String(i + 1).padStart(4, "0")}`,
   name: NAMES[i],
