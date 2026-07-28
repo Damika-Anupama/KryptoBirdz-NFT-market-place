@@ -3,6 +3,7 @@ src/abis/
 
 # production build output
 /dist
+/build
 
 # logs
 *.log
