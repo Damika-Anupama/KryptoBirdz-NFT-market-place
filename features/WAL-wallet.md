@@ -1,0 +1,83 @@
+# WAL — Simulated Wallet & Economy
+
+> Scope: Fake-wallet connection, simulated ETH balance, purchases, offers, listings, and economy loops — fully client-side.
+> Items: 75 · Done: 0
+
+## Wave-tagged
+- [ ] WAL-001 (W2) Connect Wallet modal offers 3 fake wallet personas with distinct names and avatars
+- [ ] WAL-002 (W2) Each persona in the connect modal shows a unique fake 0x address and starting balance
+- [ ] WAL-003 (W2) Selecting a persona connects instantly and fires a "Wallet connected" toast
+- [ ] WAL-004 (W2) Navbar shows persistent simulated ETH balance starting at 10.0000, to 4 decimal places
+- [ ] WAL-005 (W2) Navbar shows truncated connected address in 0x1234…abcd form
+- [ ] WAL-006 (W2) Copy-address button next to the truncated address shows "Copied" feedback for 2s
+- [ ] WAL-007 (W2) Disconnect action in wallet dropdown returns navbar to the Connect Wallet state
+- [ ] WAL-008 (W2) Wallet connection, balance, and holdings persist across page reloads
+- [ ] WAL-009 (W2) Buy button is disabled when balance is below the bird's price plus gas
+- [ ] WAL-010 (W2) Disabled Buy shows tooltip stating insufficient funds and the exact ETH shortfall
+- [ ] WAL-011 (W2) Purchase opens a multi-step modal starting at a Review step with bird, price, and total
+- [ ] WAL-012 (W2) Review step itemizes a simulated gas fee as a separate line from the bird price
+- [ ] WAL-013 (W2) Gas fee varies slightly per transaction within a realistic deterministic range
+- [ ] WAL-014 (W2) Pending step shows animated progress bar with fake block confirmations counting up
+- [ ] WAL-015 (W2) Purchase modal cannot be dismissed during the Pending step, only on Review
+- [ ] WAL-016 (W2) Confirmed step shows an animated success checkmark before revealing the receipt
+- [ ] WAL-017 (W2) Every purchase generates a plausible unique fake transaction hash
+- [ ] WAL-018 (W2) Receipt screen shows tx hash, timestamp, item, price, gas, and new balance
+- [ ] WAL-019 (W2) Copy-hash button on the receipt copies the full fake tx hash with feedback
+- [ ] WAL-020 (W2) Confirming a purchase deducts price plus gas from the navbar balance
+- [ ] WAL-021 (W2) Purchased birds are recorded as owned and show an "Owned" badge on their grid card
+- [ ] WAL-022 (W2) Bird detail shows "Owned by you" with your persona avatar once purchased
+- [ ] WAL-023 (W2) Owned birds show a "List for sale" action opening a listing modal with price input
+- [ ] WAL-024 (W2) Listing price input validates a positive amount with at most 4 decimal places
+- [ ] WAL-025 (W2) Birds you list show a "Listed by you" tag and your asking price in the grid
+- [ ] WAL-026 (W2) Delist action removes your listing and restores the bird to not-for-sale state
+- [ ] WAL-027 (W2) Selling a listed bird to a bot buyer credits your balance minus a simulated fee
+- [ ] WAL-028 (W2) Make Offer button on unowned birds opens a modal with an offer amount input
+- [ ] WAL-029 (W2) Offer amount is validated against your available balance before submitting
+- [ ] WAL-030 (W2) Submitted offers appear as Pending in a wallet-panel offers list with elapsed time
+- [ ] WAL-031 (W2) Bot sellers accept or decline each pending offer after a simulated timer
+- [ ] WAL-032 (W2) Accepted offers auto-complete the purchase and fire an "Offer accepted" toast
+- [ ] WAL-033 (W2) Declined offers fire a toast with a randomized decline reason from the bot
+- [ ] WAL-034 (W2) Pending offers can be cancelled before the bot responds
+- [ ] WAL-035 (W2) Faucet button in the wallet panel grants a +1 ETH top-up
+- [ ] WAL-036 (W2) Faucet is rate-limited to once per day with a live countdown until next claim
+- [ ] WAL-037 (W2) Balance changes animate with a rolling digit ticker instead of jumping
+- [ ] WAL-038 (W2) Balance flashes green on increase and red on decrease
+- [ ] WAL-039 (W2) Wallet dropdown shows portfolio value as the sum of owned birds' current prices
+- [ ] WAL-040 (W2) Wallet dropdown shows a count of birds owned with a link to your holdings
+- [ ] WAL-041 (W2) Wallet panel lists purchase history newest-first with price and timestamp
+- [ ] WAL-042 (W2) Purchase history rows link to the corresponding bird detail page
+- [ ] WAL-043 (W2) Full wallet reset restores 10 ETH, clears holdings, offers, and history
+- [ ] WAL-044 (W2) Reset confirmation requires typing RESET to enable the destructive button
+- [ ] WAL-045 (W2) Rare simulated transaction failure shows a revert message and leaves balance unchanged
+
+## Backlog
+- [ ] WAL-046 (—) Retry button on a failed transaction re-runs the purchase from the Review step
+- [ ] WAL-047 (—) Switch between all 3 wallet personas, each keeping separate balance and holdings
+- [ ] WAL-048 (—) Gift an owned bird to a fake user address with a confirmation flow
+- [ ] WAL-049 (—) Send ETH to a fake address with amount validation and a receipt
+- [ ] WAL-050 (—) Spending chart in the wallet panel plots balance over time from transaction history
+- [ ] WAL-051 (—) Price alerts notify you when a watched bird's price drops below your target
+- [ ] WAL-052 (—) Watchlist star on cards collects birds into a wallet-panel watchlist tab
+- [ ] WAL-053 (—) Bots counter-offer with a new price you can accept or decline
+- [ ] WAL-054 (—) Cart lets you queue multiple birds and buy them in a single checkout
+- [ ] WAL-055 (—) Bundle checkout shows combined price, single gas fee, and one shared receipt
+- [ ] WAL-056 (—) Auction your owned bird with a countdown while bots place escalating bids
+- [ ] WAL-057 (—) Bid on bot-run auctions with outbid notifications and a closing timer
+- [ ] WAL-058 (—) Receipts itemize a simulated 2.5% creator royalty line
+- [ ] WAL-059 (—) Currency toggle shows all prices in ETH or fake-rate USD
+- [ ] WAL-060 (—) Gas speed selector (slow/average/fast) changes fee and pending duration
+- [ ] WAL-061 (—) Set an ENS-style nickname shown in place of your truncated address
+- [ ] WAL-062 (—) Pick a custom avatar for your persona from a preset gallery
+- [ ] WAL-063 (—) Download any receipt as a JSON file from the receipt screen
+- [ ] WAL-064 (—) Transaction detail route /tx/:hash renders a full fake explorer view
+- [ ] WAL-065 (—) Stake an owned bird to earn a slow simulated ETH drip while locked
+- [ ] WAL-066 (—) Daily visit streak grants a small escalating ETH bonus
+- [ ] WAL-067 (—) Achievement badges unlock for milestones like first purchase and 5 birds owned
+- [ ] WAL-068 (—) Collector leaderboard ranks you against bot wallets by portfolio value
+- [ ] WAL-069 (—) Incoming offers panel shows bot offers on your listed birds
+- [ ] WAL-070 (—) Accept or decline incoming bot offers directly from the wallet panel
+- [ ] WAL-071 (—) Net profit/loss per owned bird shown against its purchase price
+- [ ] WAL-072 (—) Tax-style yearly summary screen totals purchases, sales, and gas paid
+- [ ] WAL-073 (—) Low-balance warning banner appears under 1 ETH with a faucet shortcut
+- [ ] WAL-074 (—) Spending limit setting warns before any purchase above your chosen cap
+- [ ] WAL-075 (—) Confetti burst plays on your first successful purchase

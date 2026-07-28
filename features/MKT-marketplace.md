@@ -1,0 +1,83 @@
+# MKT — Marketplace & Discovery
+
+> Scope: Browsing, filtering, sorting, and comparing birds on the /market grid.
+> Items: 75 · Done: 0
+
+## Wave-tagged
+- [ ] MKT-001 (W1) Sync search query to URL param ?q= on /market and restore it on page load
+- [ ] MKT-002 (W1) Sync rarity filter to URL param ?rarity= and restore it on page load
+- [ ] MKT-003 (W1) Show live result count "Showing N of M birds" above the grid
+- [ ] MKT-004 (W1) Show skeleton placeholder cards while the catalogue hydrates
+- [ ] MKT-005 (W1) Empty-state panel with a "Clear filters" button when no birds match
+- [ ] MKT-006 (W1) Recently-viewed strip of the last 8 opened birds, persisted in localStorage
+- [ ] MKT-007 (W1) Card hover lift and glow polish with a visible keyboard focus ring
+- [ ] MKT-008 (W1) Clicking a card navigates to /item/:id via HashRouter
+- [ ] MKT-009 (W1) Preserve grid scroll position when returning to /market from an item page
+- [ ] MKT-010 (W1) Sticky filter bar stays visible while scrolling the grid
+- [ ] MKT-011 (W1) Color-coded rarity badge on every card (Common/Rare/Epic/Legendary)
+- [ ] MKT-012 (W1) Like button toggles heart state and count, persisted in localStorage
+- [ ] MKT-013 (W1) Back-to-top floating button appears after scrolling past two screens
+- [ ] MKT-014 (W1) Lazy-load card artwork with a fade-in as cards enter the viewport
+- [ ] MKT-015 (W1) Responsive grid: 1 column on phones, 2 on tablets, 4 on desktop
+- [ ] MKT-016 (W3) Sort by price ascending
+- [ ] MKT-017 (W3) Sort by price descending
+- [ ] MKT-018 (W3) Sort by rarity ascending (Common first)
+- [ ] MKT-019 (W3) Sort by rarity descending (Legendary first)
+- [ ] MKT-020 (W3) Sort by likes ascending
+- [ ] MKT-021 (W3) Sort by likes descending
+- [ ] MKT-022 (W3) Sort by name A to Z
+- [ ] MKT-023 (W3) Sort by name Z to A
+- [ ] MKT-024 (W3) Sort by token id ascending
+- [ ] MKT-025 (W3) Sort by token id descending
+- [ ] MKT-026 (W3) Price-range slider with min/max handles filters the grid live
+- [ ] MKT-027 (W3) Price-range bounds editable as ETH number inputs synced with the slider
+- [ ] MKT-028 (W3) Active filter chips row shows every applied filter and the search query
+- [ ] MKT-029 (W3) Remove a single filter via the X on its chip
+- [ ] MKT-030 (W3) "Clear all" chip resets every filter and the search query at once
+- [ ] MKT-031 (W3) View switcher toggles between grid, list, and compact layouts
+- [ ] MKT-032 (W3) Persist the selected view mode in localStorage across sessions
+- [ ] MKT-033 (W3) Pin up to 3 birds to a compare tray from a card action
+- [ ] MKT-034 (W3) Compare view shows pinned birds side by side with trait differences highlighted
+- [ ] MKT-035 (W3) Compare tray badge shows pinned count and opens the compare view on click
+- [ ] MKT-036 (W3) Save the current filter combination as a named preset
+- [ ] MKT-037 (W3) Apply or delete saved filter presets from a presets dropdown
+- [ ] MKT-038 (W3) Shuffle button randomizes the grid order in one click
+- [ ] MKT-039 (W3) Pagination controls with numbered pages and prev/next
+- [ ] MKT-040 (W3) Toggle between pagination and infinite scroll, choice persisted
+
+## Backlog
+- [ ] MKT-041 (—) Density toggle switches card spacing between comfortable and compact
+- [ ] MKT-042 (—) Bulk-select mode adds a checkbox to every card
+- [ ] MKT-043 (—) Bulk-like all selected birds in one action with a summary toast
+- [ ] MKT-044 (—) Watchlist: add/remove birds and filter the grid to watchlist only
+- [ ] MKT-045 (—) Trending strip of the top 5 most-liked birds above the grid
+- [ ] MKT-046 (—) "New this week" badge on the most recently minted birds
+- [ ] MKT-047 (—) Click a trait pill on a card to filter the grid by that trait
+- [ ] MKT-048 (—) Click an owner handle on a card to filter the grid to that owner's birds
+- [ ] MKT-049 (—) Price histogram above the range slider showing catalogue distribution
+- [ ] MKT-050 (—) Arrow-key navigation moves focus between cards in the grid
+- [ ] MKT-051 (—) "Surprise me" button opens a random bird's detail page
+- [ ] MKT-052 (—) "Sold" ribbon on cards purchased during this session
+- [ ] MKT-053 (—) "Owned by you" filter shows only birds you have purchased
+- [ ] MKT-054 (—) Quick-view modal with traits and a Buy button without leaving the market
+- [ ] MKT-055 (—) Multi-rarity selection filters (e.g. Epic and Legendary together)
+- [ ] MKT-056 (—) Rarity distribution mini-chart in the filter bar
+- [ ] MKT-057 (—) Minimum-likes filter input hides birds below the threshold
+- [ ] MKT-058 (—) Trait-count filter shows birds with exactly N traits
+- [ ] MKT-059 (—) Dimmed "unavailable" style on birds owned by other simulated buyers
+- [ ] MKT-060 (—) Document title reflects active filters and result count
+- [ ] MKT-061 (—) Export the current filtered list as a JSON download
+- [ ] MKT-062 (—) Copy a shareable link to the current filtered market view
+- [ ] MKT-063 (—) Animated count-up when the result count changes
+- [ ] MKT-064 (—) Remember scroll position separately per view mode
+- [ ] MKT-065 (—) Card flip animation reveals full trait list on the back
+- [ ] MKT-066 (—) Toggle prices between ETH and simulated USD across the grid
+- [ ] MKT-067 (—) Sort direction arrow indicator shown in the sort control
+- [ ] MKT-068 (—) Alphabet jump index in name-sorted list view
+- [ ] MKT-069 (—) Undo toast restores filters after "Clear all"
+- [ ] MKT-070 (—) Pin a favorite preset as a one-click chip in the filter bar
+- [ ] MKT-071 (—) Page-size selector for pagination (12 / 24 / 48 per page)
+- [ ] MKT-072 (—) Brief pulse highlight on a card right after you like it
+- [ ] MKT-073 (—) Session stats footer showing how many birds you viewed this visit
+- [ ] MKT-074 (—) Hover preview tooltip lists a bird's traits without opening detail
+- [ ] MKT-075 (—) Offline banner appears when the browser loses connectivity

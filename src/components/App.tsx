@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import { BIRDZ, RARITY, STATS, isRarityTier, type Bird } from "../data/birdz";
+import { BUILD_INFO } from "../data/buildInfo";
 import "./App.css";
 
 const REPO_URL =
@@ -312,7 +313,8 @@ export default function App() {
           <span className="nav__logo">🦅</span> KryptoBirdz
         </div>
         <p className="footer__note">
-          Demonstration build · not affiliated with any live token sale ·{" "}
+          Demonstration build · Wave {BUILD_INFO.wave} · not affiliated with
+          any live token sale ·{" "}
           <a href={REPO_URL} target="_blank" rel="noreferrer">
             source on GitHub
           </a>
