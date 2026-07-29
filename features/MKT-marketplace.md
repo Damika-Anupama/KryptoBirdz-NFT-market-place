@@ -1,24 +1,24 @@
-# MKT — Marketplace & Discovery
+﻿# MKT — Marketplace & Discovery
 
 > Scope: Browsing, filtering, sorting, and comparing birds on the /market grid.
 > Items: 75 · Done: 0
 
 ## Wave-tagged
-- [ ] MKT-001 (W1) Sync search query to URL param ?q= on /market and restore it on page load
-- [ ] MKT-002 (W1) Sync rarity filter to URL param ?rarity= and restore it on page load
-- [ ] MKT-003 (W1) Show live result count "Showing N of M birds" above the grid
-- [ ] MKT-004 (W1) Show skeleton placeholder cards while the catalogue hydrates
-- [ ] MKT-005 (W1) Empty-state panel with a "Clear filters" button when no birds match
-- [ ] MKT-006 (W1) Recently-viewed strip of the last 8 opened birds, persisted in localStorage
-- [ ] MKT-007 (W1) Card hover lift and glow polish with a visible keyboard focus ring
-- [ ] MKT-008 (W1) Clicking a card navigates to /item/:id via HashRouter
-- [ ] MKT-009 (W1) Preserve grid scroll position when returning to /market from an item page
-- [ ] MKT-010 (W1) Sticky filter bar stays visible while scrolling the grid
-- [ ] MKT-011 (W1) Color-coded rarity badge on every card (Common/Rare/Epic/Legendary)
-- [ ] MKT-012 (W1) Like button toggles heart state and count, persisted in localStorage
-- [ ] MKT-013 (W1) Back-to-top floating button appears after scrolling past two screens
-- [ ] MKT-014 (W1) Lazy-load card artwork with a fade-in as cards enter the viewport
-- [ ] MKT-015 (W1) Responsive grid: 1 column on phones, 2 on tablets, 4 on desktop
+- [x] MKT-001 (W1) Sync search query to URL param ?q= on /market and restore it on page load <!-- done:2026-07-29 W1 -->
+- [x] MKT-002 (W1) Sync rarity filter to URL param ?rarity= and restore it on page load <!-- done:2026-07-29 W1 -->
+- [x] MKT-003 (W1) Show live result count "Showing N of M birds" above the grid <!-- done:2026-07-29 W1 -->
+- [x] MKT-004 (W1) Show skeleton placeholder cards while the catalogue hydrates <!-- done:2026-07-29 W1 -->
+- [x] MKT-005 (W1) Empty-state panel with a "Clear filters" button when no birds match <!-- done:2026-07-29 W1 -->
+- [x] MKT-006 (W1) Recently-viewed strip of the last 8 opened birds, persisted in localStorage <!-- done:2026-07-29 W1 -->
+- [x] MKT-007 (W1) Card hover lift and glow polish with a visible keyboard focus ring <!-- done:2026-07-29 W1 -->
+- [x] MKT-008 (W1) Clicking a card navigates to /item/:id via HashRouter <!-- done:2026-07-29 W1 -->
+- [x] MKT-009 (W1) Preserve grid scroll position when returning to /market from an item page <!-- done:2026-07-29 W1 -->
+- [x] MKT-010 (W1) Sticky filter bar stays visible while scrolling the grid <!-- done:2026-07-29 W1 -->
+- [x] MKT-011 (W1) Color-coded rarity badge on every card (Common/Rare/Epic/Legendary) <!-- done:2026-07-29 W1 -->
+- [x] MKT-012 (W1) Like button toggles heart state and count, persisted in localStorage <!-- done:2026-07-29 W1 -->
+- [x] MKT-013 (W1) Back-to-top floating button appears after scrolling past two screens <!-- done:2026-07-29 W1 -->
+- [x] MKT-014 (W1) Lazy-load card artwork with a fade-in as cards enter the viewport <!-- done:2026-07-29 W1 -->
+- [x] MKT-015 (W1) Responsive grid: 1 column on phones, 2 on tablets, 4 on desktop <!-- done:2026-07-29 W1 -->
 - [ ] MKT-016 (W3) Sort by price ascending
 - [ ] MKT-017 (W3) Sort by price descending
 - [ ] MKT-018 (W3) Sort by rarity ascending (Common first)

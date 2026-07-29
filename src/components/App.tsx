@@ -1,126 +1,62 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { BIRDZ, RARITY, STATS, isRarityTier, type Bird } from "../data/birdz";
+import { Suspense, lazy, useEffect, useState } from "react";
+import {
+  HashRouter,
+  Link,
+  NavLink,
+  Route,
+  Routes,
+  useLocation,
+  useSearchParams,
+} from "react-router-dom";
+import ErrorBoundary from "./ErrorBoundary";
+import DebugPanel from "./DebugPanel";
+import ShortcutsModal from "./ShortcutsModal";
 import { BUILD_INFO } from "../data/buildInfo";
+import { REPO_URL } from "../data/links";
+import { useToastMessage, showToast } from "../stores/toast";
 import "./App.css";
 
-const REPO_URL =
-  "https://github.com/Damika-s-Play-Ground/KryptoBirdz-NFT-market-place";
+const HomePage = lazy(() => import("../pages/HomePage"));
+const MarketplacePage = lazy(() => import("../pages/MarketplacePage"));
+const ItemPage = lazy(() => import("../pages/ItemPage"));
+const AboutDemoPage = lazy(() => import("../pages/AboutDemoPage"));
+const ChangelogPage = lazy(() => import("../pages/ChangelogPage"));
+const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 
-const FILTERS = ["All", "Legendary", "Epic", "Rare", "Common"] as const;
-type Filter = (typeof FILTERS)[number];
-
-interface StatProps {
-  label: string;
-  value: string | number;
-  suffix?: string;
-}
-
-function Stat({ label, value, suffix }: StatProps) {
+function SkeletonGrid() {
   return (
-    <div className="stat">
-      <span className="stat__value">
-        {value}
-        {suffix && <span className="stat__suffix">{suffix}</span>}
-      </span>
-      <span className="stat__label">{label}</span>
+    <div className="market" aria-hidden="true">
+      <div className="grid">
+        {Array.from({ length: 8 }, (_, i) => (
+          <div key={i} className="card card--skeleton">
+            <div className="skeleton skeleton--media" />
+            <div className="card__body">
+              <div className="skeleton skeleton--line" />
+              <div className="skeleton skeleton--line skeleton--short" />
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
-interface BirdCardProps {
-  bird: Bird;
-  onAction: (message: string) => void;
-}
+function Shell() {
+  const location = useLocation();
+  const toast = useToastMessage();
+  const [params] = useSearchParams();
+  const debug = params.get("debug") === "1";
+  const [shortcuts, setShortcuts] = useState(false);
 
-function BirdCard({ bird, onAction }: BirdCardProps) {
-  const accent = RARITY[bird.rarity].color;
-  return (
-    <article
-      className="card"
-      style={{ "--accent": accent } as React.CSSProperties}
-      tabIndex={0}
-    >
-      <div className="card__media">
-        <img src={bird.image} alt={bird.name} loading="lazy" />
-        <span className="card__rarity">{bird.rarity}</span>
-        <button
-          className="card__like"
-          onClick={() => onAction(`Liked ${bird.name}`)}
-          aria-label={`Like ${bird.name}`}
-        >
-          ♥ {bird.likes}
-        </button>
-      </div>
-
-      <div className="card__body">
-        <div className="card__row">
-          <h3 className="card__name">{bird.name}</h3>
-          <span className="card__token">{bird.tokenId}</span>
-        </div>
-
-        <div className="card__traits">
-          {bird.traits.map((t) => (
-            <span key={t} className="chip">
-              {t}
-            </span>
-          ))}
-        </div>
-
-        <div className="card__footer">
-          <div className="card__price">
-            <span className="card__price-label">Price</span>
-            <span className="card__price-value">
-              <span className="eth">◆</span> {bird.price.toFixed(2)} ETH
-            </span>
-          </div>
-          <button
-            className="btn btn--buy"
-            onClick={() =>
-              onAction(
-                `Demo: “Buy ${bird.name}” — connect a wallet in the full dApp`
-              )
-            }
-          >
-            Buy now
-          </button>
-        </div>
-      </div>
-    </article>
-  );
-}
-
-export default function App() {
-  const [filter, setFilter] = useState<Filter>("All");
-  const [query, setQuery] = useState("");
-  const [toast, setToast] = useState<string | null>(null);
-  const toastTimer = useRef<number | undefined>(undefined);
-
-  const showToast = useCallback((message: string) => {
-    setToast(message);
-    window.clearTimeout(toastTimer.current);
-    toastTimer.current = window.setTimeout(() => setToast(null), 2600);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") return;
+      if (e.key === "?") setShortcuts((s) => !s);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
-
-  useEffect(() => () => window.clearTimeout(toastTimer.current), []);
-
-  const visible = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return BIRDZ.filter((b) => {
-      const matchesFilter = filter === "All" || b.rarity === filter;
-      const matchesQuery =
-        !q ||
-        b.name.toLowerCase().includes(q) ||
-        b.tokenId.toLowerCase().includes(q) ||
-        b.traits.some((t) => t.toLowerCase().includes(q));
-      return matchesFilter && matchesQuery;
-    });
-  }, [filter, query]);
 
   return (
     <div className="app">
@@ -130,17 +66,16 @@ export default function App() {
         <span className="orb orb--3" />
       </div>
 
-      {/* NAVBAR */}
       <header className="nav">
-        <a className="nav__brand" href="#top">
+        <Link className="nav__brand" to="/">
           <span className="nav__logo">🦅</span>
           <span>
             Krypto<span className="nav__brand-accent">Birdz</span>
           </span>
-        </a>
+        </Link>
         <nav className="nav__links">
-          <a href="#market">Marketplace</a>
-          <a href="#about">About</a>
+          <NavLink to="/market">Marketplace</NavLink>
+          <NavLink to="/about-demo">About</NavLink>
           <a href={REPO_URL} target="_blank" rel="noreferrer">
             GitHub ↗
           </a>
@@ -148,183 +83,61 @@ export default function App() {
         <button
           className="btn btn--ghost"
           onClick={() =>
-            showToast("Demo mode — wallet connection lives in the full dApp")
+            showToast("Demo mode — the simulated wallet arrives in Wave 2")
           }
         >
           Connect Wallet
         </button>
       </header>
 
-      {/* DEMO BANNER */}
       <div className="demo-strip">
         ✦ Live demo build — a static preview of the on-chain KryptoBirdz
         marketplace. No wallet or gas required.
       </div>
 
-      {/* HERO */}
-      <section className="hero" id="top">
-        <div className="hero__copy">
-          <span className="hero__eyebrow">ERC-721 · Ethereum · Web3</span>
-          <h1 className="hero__title">
-            Collect the flock of
-            <span className="hero__title-grad"> KryptoBirdz</span>
-          </h1>
-          <p className="hero__sub">
-            A hand-illustrated generative aviary of {STATS.items} unique
-            non-fungible birds. Explore the collection, filter by rarity, and
-            preview the marketplace experience — all rendered right here in the
-            browser.
-          </p>
-          <div className="hero__cta">
-            <a className="btn btn--primary" href="#market">
-              Explore collection
-            </a>
-            <a
-              className="btn btn--ghost"
-              href={REPO_URL}
-              target="_blank"
-              rel="noreferrer"
-            >
-              View source
-            </a>
-          </div>
-          <div className="hero__stats">
-            <Stat label="Items" value={STATS.items} />
-            <Stat label="Owners" value={STATS.owners} />
-            <Stat label="Floor" value={STATS.floor.toFixed(2)} suffix=" ETH" />
-            <Stat
-              label="Volume"
-              value={STATS.volume.toFixed(1)}
-              suffix=" ETH"
-            />
-          </div>
-        </div>
+      <div className="page" key={location.pathname}>
+        <ErrorBoundary>
+          <Suspense fallback={<SkeletonGrid />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/market" element={<MarketplacePage />} />
+              <Route path="/item/:tokenId" element={<ItemPage />} />
+              <Route path="/about-demo" element={<AboutDemoPage />} />
+              <Route path="/changelog" element={<ChangelogPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
+      </div>
 
-        <div className="hero__art" aria-hidden="true">
-          <div className="hero__stack">
-            <img
-              src={BIRDZ[4].image}
-              alt=""
-              className="hero__card hero__card--back"
-            />
-            <img
-              src={BIRDZ[14].image}
-              alt=""
-              className="hero__card hero__card--mid"
-            />
-            <img
-              src={BIRDZ[0].image}
-              alt=""
-              className="hero__card hero__card--front"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* MARKETPLACE */}
-      <main className="market" id="market">
-        <div className="market__head">
-          <div>
-            <h2 className="section-title">Marketplace</h2>
-            <p className="section-sub">
-              {visible.length} of {BIRDZ.length} birds
-            </p>
-          </div>
-          <div className="market__controls">
-            <input
-              className="search"
-              type="search"
-              placeholder="Search name, trait or #id…"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              aria-label="Search collection"
-            />
-            <div className="filters" role="tablist" aria-label="Filter by rarity">
-              {FILTERS.map((f) => (
-                <button
-                  key={f}
-                  role="tab"
-                  aria-selected={filter === f}
-                  className={`filter ${filter === f ? "is-active" : ""}`}
-                  style={
-                    isRarityTier(f)
-                      ? ({ "--accent": RARITY[f].color } as React.CSSProperties)
-                      : undefined
-                  }
-                  onClick={() => setFilter(f)}
-                >
-                  {f}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {visible.length === 0 ? (
-          <p className="empty">No birds match “{query}”. Try another search.</p>
-        ) : (
-          <div className="grid">
-            {visible.map((bird) => (
-              <BirdCard key={bird.id} bird={bird} onAction={showToast} />
-            ))}
-          </div>
-        )}
-      </main>
-
-      {/* ABOUT */}
-      <section className="about" id="about">
-        <h2 className="section-title">About this build</h2>
-        <div className="about__grid">
-          <div className="about__item">
-            <span className="about__icon">🎨</span>
-            <h3>Frontend-only</h3>
-            <p>
-              This branch strips the Solidity/Truffle backend so the interface
-              can be hosted anywhere as a zero-config static site.
-            </p>
-          </div>
-          <div className="about__item">
-            <span className="about__icon">⚡</span>
-            <h3>Demo mode</h3>
-            <p>
-              Catalogue data is bundled locally. Buy, like and connect actions
-              are simulated — the real dApp talks to an ERC-721 contract via
-              MetaMask.
-            </p>
-          </div>
-          <div className="about__item">
-            <span className="about__icon">🔗</span>
-            <h3>Full source</h3>
-            <p>
-              The complete marketplace — smart contracts, migrations and web3
-              wiring — lives on the{" "}
-              <a href={REPO_URL} target="_blank" rel="noreferrer">
-                main branch
-              </a>
-              .
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER */}
       <footer className="footer">
         <div className="footer__brand">
           <span className="nav__logo">🦅</span> KryptoBirdz
         </div>
         <p className="footer__note">
-          Demonstration build · Wave {BUILD_INFO.wave} · not affiliated with
-          any live token sale ·{" "}
+          Demonstration build · Wave {BUILD_INFO.wave} ·{" "}
+          <Link to="/changelog">changelog</Link> · not affiliated with any live
+          token sale ·{" "}
           <a href={REPO_URL} target="_blank" rel="noreferrer">
             source on GitHub
           </a>
         </p>
       </footer>
 
-      {/* TOAST */}
       <div className={`toast ${toast ? "is-visible" : ""}`} role="status">
         {toast}
       </div>
+
+      {shortcuts && <ShortcutsModal onClose={() => setShortcuts(false)} />}
+      {debug && <DebugPanel />}
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <HashRouter>
+      <Shell />
+    </HashRouter>
   );
 }

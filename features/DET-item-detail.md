@@ -1,44 +1,44 @@
-# DET — Item Detail & Provenance
+﻿# DET — Item Detail & Provenance
 
 > Scope: The /item/:id page — artwork, traits, pricing, sharing, and simulated ownership history.
 > Items: 70 · Done: 0
 
 ## Wave-tagged
-- [ ] DET-001 (W1) /item/:id route renders a full detail page for any catalogue bird
-- [ ] DET-002 (W1) 404 not-found page with a back-to-market link for unknown token ids
-- [ ] DET-003 (W1) Breadcrumb "Market › <bird name>" at the top of the detail page
-- [ ] DET-004 (W1) Large artwork panel with a rarity-tinted glow border
-- [ ] DET-005 (W1) Rarity badge and tier label shown beside the bird name
-- [ ] DET-006 (W1) Price in ETH with a Buy button on the detail page
-- [ ] DET-007 (W1) Simulated buy on detail page sets owner to you and shows a toast
-- [ ] DET-008 (W1) "Owned by you" badge when the connected wallet owns the bird
-- [ ] DET-009 (W1) Trait pills listed with trait name and value
-- [ ] DET-010 (W1) Clicking a trait pill opens /market filtered to that trait
-- [ ] DET-011 (W1) Each trait pill shows its rarity percentage across the catalogue
-- [ ] DET-012 (W1) Copy-token-id button with a "Copied" feedback state
-- [ ] DET-013 (W1) Prev/next buttons navigate to adjacent token ids
-- [ ] DET-014 (W1) Left/right arrow keys navigate to the previous/next bird
-- [ ] DET-015 (W1) Prev/next controls disable at the first and last token
-- [ ] DET-016 (W1) Clicking the artwork opens a zoom lightbox overlay
-- [ ] DET-017 (W1) Lightbox closes via Esc, overlay click, or close button
-- [ ] DET-018 (W1) Zoom in/out and reset controls inside the lightbox
-- [ ] DET-019 (W1) Similar-birds rail of 6 birds sharing rarity or a trait
-- [ ] DET-020 (W1) Similar-bird cards link to their own detail pages
-- [ ] DET-021 (W1) Price-history sparkline seeded deterministically per token
-- [ ] DET-022 (W1) Hovering the sparkline shows the point's price and simulated date
-- [ ] DET-023 (W1) Owner display with handle and generated identicon avatar
-- [ ] DET-024 (W1) Like button on the detail page stays in sync with the market card
-- [ ] DET-025 (W1) Share menu with a copy-link action and confirmation toast
-- [ ] DET-026 (W1) Share menu uses the Web Share API when available, copy fallback otherwise
-- [ ] DET-027 (W1) Download a canvas-rendered share-card PNG with art, name, and price
-- [ ] DET-028 (W1) Simulated metadata JSON viewer with syntax highlighting
-- [ ] DET-029 (W1) Copy-metadata-JSON button with a "Copied" feedback state
-- [ ] DET-030 (W1) Provenance timeline of mint, transfers, and sales seeded per token
-- [ ] DET-031 (W1) Provenance entries show event type, wallet handles, price, and date
-- [ ] DET-032 (W1) A simulated purchase appends a new sale event to the provenance timeline
-- [ ] DET-033 (W1) Back-to-market link restores the previous scroll position and filters
-- [ ] DET-034 (W1) Document title set to the bird's name and token id
-- [ ] DET-035 (W1) Detail deep links survive a hard refresh via HashRouter
+- [x] DET-001 (W1) /item/:id route renders a full detail page for any catalogue bird <!-- done:2026-07-29 W1 -->
+- [x] DET-002 (W1) 404 not-found page with a back-to-market link for unknown token ids <!-- done:2026-07-29 W1 -->
+- [x] DET-003 (W1) Breadcrumb "Market › <bird name>" at the top of the detail page <!-- done:2026-07-29 W1 -->
+- [x] DET-004 (W1) Large artwork panel with a rarity-tinted glow border <!-- done:2026-07-29 W1 -->
+- [x] DET-005 (W1) Rarity badge and tier label shown beside the bird name <!-- done:2026-07-29 W1 -->
+- [x] DET-006 (W1) Price in ETH with a Buy button on the detail page <!-- done:2026-07-29 W1 -->
+- [x] DET-007 (W1) Simulated buy on detail page sets owner to you and shows a toast <!-- done:2026-07-29 W1 -->
+- [x] DET-008 (W1) "Owned by you" badge when the connected wallet owns the bird <!-- done:2026-07-29 W1 -->
+- [x] DET-009 (W1) Trait pills listed with trait name and value <!-- done:2026-07-29 W1 -->
+- [x] DET-010 (W1) Clicking a trait pill opens /market filtered to that trait <!-- done:2026-07-29 W1 -->
+- [x] DET-011 (W1) Each trait pill shows its rarity percentage across the catalogue <!-- done:2026-07-29 W1 -->
+- [x] DET-012 (W1) Copy-token-id button with a "Copied" feedback state <!-- done:2026-07-29 W1 -->
+- [x] DET-013 (W1) Prev/next buttons navigate to adjacent token ids <!-- done:2026-07-29 W1 -->
+- [x] DET-014 (W1) Left/right arrow keys navigate to the previous/next bird <!-- done:2026-07-29 W1 -->
+- [x] DET-015 (W1) Prev/next controls disable at the first and last token <!-- done:2026-07-29 W1 -->
+- [x] DET-016 (W1) Clicking the artwork opens a zoom lightbox overlay <!-- done:2026-07-29 W1 -->
+- [x] DET-017 (W1) Lightbox closes via Esc, overlay click, or close button <!-- done:2026-07-29 W1 -->
+- [x] DET-018 (W1) Zoom in/out and reset controls inside the lightbox <!-- done:2026-07-29 W1 -->
+- [x] DET-019 (W1) Similar-birds rail of 6 birds sharing rarity or a trait <!-- done:2026-07-29 W1 -->
+- [x] DET-020 (W1) Similar-bird cards link to their own detail pages <!-- done:2026-07-29 W1 -->
+- [x] DET-021 (W1) Price-history sparkline seeded deterministically per token <!-- done:2026-07-29 W1 -->
+- [x] DET-022 (W1) Hovering the sparkline shows the point's price and simulated date <!-- done:2026-07-29 W1 -->
+- [x] DET-023 (W1) Owner display with handle and generated identicon avatar <!-- done:2026-07-29 W1 -->
+- [x] DET-024 (W1) Like button on the detail page stays in sync with the market card <!-- done:2026-07-29 W1 -->
+- [x] DET-025 (W1) Share menu with a copy-link action and confirmation toast <!-- done:2026-07-29 W1 -->
+- [x] DET-026 (W1) Share menu uses the Web Share API when available, copy fallback otherwise <!-- done:2026-07-29 W1 -->
+- [x] DET-027 (W1) Download a canvas-rendered share-card PNG with art, name, and price <!-- done:2026-07-29 W1 -->
+- [x] DET-028 (W1) Simulated metadata JSON viewer with syntax highlighting <!-- done:2026-07-29 W1 -->
+- [x] DET-029 (W1) Copy-metadata-JSON button with a "Copied" feedback state <!-- done:2026-07-29 W1 -->
+- [x] DET-030 (W1) Provenance timeline of mint, transfers, and sales seeded per token <!-- done:2026-07-29 W1 -->
+- [x] DET-031 (W1) Provenance entries show event type, wallet handles, price, and date <!-- done:2026-07-29 W1 -->
+- [x] DET-032 (W1) A simulated purchase appends a new sale event to the provenance timeline <!-- done:2026-07-29 W1 -->
+- [x] DET-033 (W1) Back-to-market link restores the previous scroll position and filters <!-- done:2026-07-29 W1 -->
+- [x] DET-034 (W1) Document title set to the bird's name and token id <!-- done:2026-07-29 W1 -->
+- [x] DET-035 (W1) Detail deep links survive a hard refresh via HashRouter <!-- done:2026-07-29 W1 -->
 
 ## Backlog
 - [ ] DET-036 (—) Toggle traits between pill view and a detailed table view

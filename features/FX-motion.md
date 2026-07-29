@@ -1,14 +1,14 @@
-# FX — Motion & Micro-interactions
+﻿# FX — Motion & Micro-interactions
 
 > Scope: Animation, transitions, and micro-interactions across the demo (framer-motion + CSS); every item must fully respect prefers-reduced-motion.
 > Items: 70 · Done: 0
 
 ## Wave-tagged
-- [ ] FX-001 (W1) Card-to-detail shared-element transition for the bird image
-- [ ] FX-002 (W1) Page transition fades between routes
-- [ ] FX-003 (W1) Staggered grid entrance animation when filters change
-- [ ] FX-004 (W1) Card hover 3D tilt that follows the cursor position
-- [ ] FX-005 (W1) Lightbox open/close spring animation
+- [x] FX-001 (W1) Card-to-detail shared-element transition for the bird image <!-- done:2026-07-29 W1 -->
+- [x] FX-002 (W1) Page transition fades between routes <!-- done:2026-07-29 W1 -->
+- [x] FX-003 (W1) Staggered grid entrance animation when filters change <!-- done:2026-07-29 W1 -->
+- [x] FX-004 (W1) Card hover 3D tilt that follows the cursor position <!-- done:2026-07-29 W1 -->
+- [x] FX-005 (W1) Lightbox open/close spring animation <!-- done:2026-07-29 W1 -->
 - [ ] FX-006 (W2) Confetti burst on confirmed purchase
 - [ ] FX-007 (W2) Balance number ticker animation whenever the balance changes
 - [ ] FX-008 (W2) Purchase-modal step transitions sliding between steps

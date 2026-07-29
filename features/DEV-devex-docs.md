@@ -1,19 +1,19 @@
-# DEV — DX, Docs & Quality
+﻿# DEV — DX, Docs & Quality
 
 > Scope: User-verifiable developer experience, documentation, debugging, and quality features surfaced inside the demo — no chores, refactors, or ordinary tests.
 > Items: 65 · Done: 0
 
 ## Wave-tagged
-- [ ] DEV-001 (W1) ErrorBoundary with friendly fallback and a copy-error-details button
-- [ ] DEV-002 (W1) 404 route with a lost-bird illustration and a link back home
-- [ ] DEV-003 (W1) /about-demo page honestly explaining what is simulated and what persists
-- [ ] DEV-004 (W1) Footer build/wave stamp showing version and current wave
-- [ ] DEV-005 (W1) In-app changelog page fed from the wave history
-- [ ] DEV-006 (W1) Keyboard shortcuts help modal opened with the `?` key
-- [ ] DEV-007 (W1) Skip-to-README link on the about page
-- [ ] DEV-008 (W1) Demo reset button that clears all local state after a confirmation dialog
-- [ ] DEV-009 (W1) Seed scenario switcher (fresh-user/collector/whale) behind ?debug=1
-- [ ] DEV-010 (W1) Debug panel behind ?debug=1 showing live store states
+- [x] DEV-001 (W1) ErrorBoundary with friendly fallback and a copy-error-details button <!-- done:2026-07-29 W1 -->
+- [x] DEV-002 (W1) 404 route with a lost-bird illustration and a link back home <!-- done:2026-07-29 W1 -->
+- [x] DEV-003 (W1) /about-demo page honestly explaining what is simulated and what persists <!-- done:2026-07-29 W1 -->
+- [x] DEV-004 (W1) Footer build/wave stamp showing version and current wave <!-- done:2026-07-29 W1 -->
+- [x] DEV-005 (W1) In-app changelog page fed from the wave history <!-- done:2026-07-29 W1 -->
+- [x] DEV-006 (W1) Keyboard shortcuts help modal opened with the `?` key <!-- done:2026-07-29 W1 -->
+- [x] DEV-007 (W1) Skip-to-README link on the about page <!-- done:2026-07-29 W1 -->
+- [x] DEV-008 (W1) Demo reset button that clears all local state after a confirmation dialog <!-- done:2026-07-29 W1 -->
+- [x] DEV-009 (W1) Seed scenario switcher (fresh-user/collector/whale) behind ?debug=1 <!-- done:2026-07-29 W1 -->
+- [x] DEV-010 (W1) Debug panel behind ?debug=1 showing live store states <!-- done:2026-07-29 W1 -->
 
 ## Backlog
 - [ ] DEV-011 (—) /gallery route rendering every UI component state (storybook-lite)
