@@ -8,6 +8,18 @@ export interface WaveEntry {
 /** Fed from the FEATURES.md wave log — newest first. */
 export const CHANGELOG: WaveEntry[] = [
   {
+    wave: 2,
+    date: "2026-07-29",
+    title: "The economy works",
+    highlights: [
+      "Simulated wallet: 3 personas, persistent balance, faucet, typed-RESET wipe",
+      "Multi-step purchases with gas, block confirmations, receipts and tx hashes",
+      "List owned birds for sale (bot collectors buy them) and haggle via offers",
+      "Activity feed with type filters, live timestamps and full local persistence",
+      "Toast stack, confetti, balance ticker and success-checkmark micro-motion",
+    ],
+  },
+  {
     wave: 1,
     date: "2026-07-29",
     title: "It's a real app now",

@@ -1,7 +1,10 @@
 import React, { useCallback, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { RARITY, type Bird } from "../data/birdz";
-import { useFavoritesStore, useIsLiked } from "../stores/favorites";
+import { toggleLikeWithActivity } from "../lib/economy";
+import { useIsOwned } from "../stores/collection";
+import { useIsLiked } from "../stores/favorites";
+import { useWalletStore } from "../stores/wallet";
 
 const REDUCED_MOTION = () =>
   typeof window.matchMedia === "function" &&
@@ -16,7 +19,8 @@ interface BirdCardProps {
 export default function BirdCard({ bird, index = 0 }: BirdCardProps) {
   const accent = RARITY[bird.rarity].color;
   const liked = useIsLiked(bird.id);
-  const toggle = useFavoritesStore((s) => s.toggle);
+  const owned = useIsOwned(bird.id);
+  const listedPrice = useWalletStore((s) => s.listings[bird.id]);
   const [loaded, setLoaded] = useState(false);
   const ref = useRef<HTMLElement>(null);
 
@@ -67,10 +71,16 @@ export default function BirdCard({ bird, index = 0 }: BirdCardProps) {
           style={{ viewTransitionName: `bird-${bird.id}` } as React.CSSProperties}
         />
         <span className="card__rarity">{bird.rarity}</span>
+        {owned && <span className="card__owned">Owned</span>}
+        {listedPrice != null && (
+          <span className="card__listed">
+            Listed by you · ◆ {listedPrice.toFixed(2)}
+          </span>
+        )}
       </Link>
       <button
         className={`card__like ${liked ? "is-liked" : ""}`}
-        onClick={() => toggle(bird.id)}
+        onClick={() => toggleLikeWithActivity(bird)}
         aria-pressed={liked}
         aria-label={`Like ${bird.name}`}
       >

@@ -10,12 +10,25 @@ import {
   type ProvenanceEvent,
 } from "../data/market-sim/provenance";
 import { copyText } from "../lib/clipboard";
+import { removeListing, toggleLikeWithActivity } from "../lib/economy";
 import { identiconDataUri } from "../lib/identicon";
 import { downloadShareCard } from "../lib/shareCard";
+import ListingModal from "../components/ListingModal";
+import OfferModal from "../components/OfferModal";
+import PurchaseModal from "../components/PurchaseModal";
+import WalletModal from "../components/WalletModal";
 import { useCollectionStore, useIsOwned } from "../stores/collection";
-import { useFavoritesStore, useIsLiked } from "../stores/favorites";
+import { useIsLiked } from "../stores/favorites";
 import { useRecentStore } from "../stores/recent";
 import { showToast } from "../stores/toast";
+import {
+  useBalance,
+  useConnectedPersona,
+  useWalletStore,
+} from "../stores/wallet";
+
+/** Conservative gas headroom used for the insufficient-funds check. */
+const GAS_HEADROOM = 0.008;
 
 function highlightJson(json: string): React.ReactNode[] {
   // Tiny JSON highlighter: keys, strings, numbers, punctuation.
@@ -87,16 +100,21 @@ export default function ItemPage() {
   const bird: Bird | undefined = BIRDZ.find((b) => b.id === idNum);
 
   const isOwned = useIsOwned(idNum);
-  const buy = useCollectionStore((s) => s.buy);
   const purchase = useCollectionStore((s) => s.owned[idNum]);
   const liked = useIsLiked(idNum);
-  const toggleLike = useFavoritesStore((s) => s.toggle);
   const record = useRecentStore((s) => s.record);
+  const persona = useConnectedPersona();
+  const balance = useBalance();
+  const listedPrice = useWalletStore((s) => s.listings[idNum]);
 
   const [copiedId, setCopiedId] = useState(false);
   const [copiedMeta, setCopiedMeta] = useState(false);
   const [lightbox, setLightbox] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+  const [buying, setBuying] = useState(false);
+  const [listing, setListing] = useState(false);
+  const [offering, setOffering] = useState(false);
+  const [connectPrompt, setConnectPrompt] = useState(false);
 
   useEffect(() => {
     if (bird) {
@@ -200,11 +218,15 @@ export default function ItemPage() {
   const marketSearch = sessionStorage.getItem("kb.marketSearch") ?? "";
   const shareUrl = window.location.href;
 
+  const shortfall = bird.price + GAS_HEADROOM - balance;
+  const cantAfford = persona != null && !isOwned && shortfall > 0;
+
   const doBuy = () => {
-    buy(bird.id, bird.price);
-    showToast(
-      `You now own ${bird.name}! (simulated — recorded locally, no chain involved)`
-    );
+    if (!persona) {
+      setConnectPrompt(true);
+      return;
+    }
+    setBuying(true);
   };
 
   const doShare = async () => {
@@ -316,14 +338,16 @@ export default function ItemPage() {
           <div className="item__owner">
             <img
               className="item__avatar"
-              src={identiconDataUri(isOwned ? "you.eth" : bird.owner)}
+              src={identiconDataUri(
+                isOwned ? persona?.address ?? "you.eth" : bird.owner
+              )}
               alt=""
               aria-hidden="true"
             />
             <div>
               <span className="item__owner-label">Owner</span>
               <span className="item__owner-handle">
-                {isOwned ? "you.eth" : bird.owner}
+                {isOwned ? `${persona?.name ?? "You"} (you)` : bird.owner}
               </span>
             </div>
           </div>
@@ -336,16 +360,56 @@ export default function ItemPage() {
               </span>
             </div>
             <div className="item__buy-actions">
-              <button
-                className="btn btn--primary"
-                onClick={doBuy}
-                disabled={isOwned}
-              >
-                {isOwned ? "In your collection" : "Buy now"}
-              </button>
+              {!isOwned && (
+                <span
+                  className="tooltip-wrap"
+                  data-tooltip={
+                    cantAfford
+                      ? `Insufficient funds — you need ◆ ${shortfall.toFixed(4)} more (incl. gas)`
+                      : undefined
+                  }
+                >
+                  <button
+                    className="btn btn--primary btn--press"
+                    onClick={doBuy}
+                    disabled={cantAfford}
+                  >
+                    {persona ? "Buy now" : "Connect to buy"}
+                  </button>
+                </span>
+              )}
+              {isOwned &&
+                (listedPrice != null ? (
+                  <>
+                    <span className="listed-tag">
+                      Listed · ◆ {listedPrice.toFixed(4)}
+                    </span>
+                    <button
+                      className="btn btn--ghost"
+                      onClick={() => removeListing(bird)}
+                    >
+                      Delist
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    className="btn btn--primary"
+                    onClick={() => setListing(true)}
+                  >
+                    List for sale
+                  </button>
+                ))}
+              {!isOwned && persona && (
+                <button
+                  className="btn btn--ghost"
+                  onClick={() => setOffering(true)}
+                >
+                  Make offer
+                </button>
+              )}
               <button
                 className={`btn btn--ghost ${liked ? "is-liked" : ""}`}
-                onClick={() => toggleLike(bird.id)}
+                onClick={() => toggleLikeWithActivity(bird)}
                 aria-pressed={liked}
               >
                 {liked ? "♥ Liked" : "♡ Like"} {bird.likes + (liked ? 1 : 0)}
@@ -451,6 +515,16 @@ export default function ItemPage() {
           alt={bird.name}
           onClose={() => setLightbox(false)}
         />
+      )}
+      {buying && (
+        <PurchaseModal bird={bird} onClose={() => setBuying(false)} />
+      )}
+      {listing && (
+        <ListingModal bird={bird} onClose={() => setListing(false)} />
+      )}
+      {offering && <OfferModal bird={bird} onClose={() => setOffering(false)} />}
+      {connectPrompt && (
+        <WalletModal onClose={() => setConnectPrompt(false)} />
       )}
     </main>
   );

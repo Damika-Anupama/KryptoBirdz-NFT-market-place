@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { REPO_URL } from "../data/links";
+import { useActivityStore } from "../stores/activity";
 import { useCollectionStore } from "../stores/collection";
 import { useFavoritesStore } from "../stores/favorites";
 import { useRecentStore } from "../stores/recent";
 import { showToast } from "../stores/toast";
+import { useWalletStore } from "../stores/wallet";
 
 export default function AboutDemoPage() {
   const [confirming, setConfirming] = useState(false);
@@ -16,6 +18,9 @@ export default function AboutDemoPage() {
     useFavoritesStore.getState().reset();
     useCollectionStore.getState().reset();
     useRecentStore.getState().reset();
+    useWalletStore.getState().resetWallet();
+    useWalletStore.getState().disconnect();
+    useActivityStore.getState().clear();
     sessionStorage.removeItem("kb.marketScroll");
     sessionStorage.removeItem("kb.marketSearch");
     setConfirming(false);

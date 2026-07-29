@@ -1,29 +1,29 @@
-# ACT — Activity & Notifications
+﻿# ACT — Activity & Notifications
 
 > Scope: Toast system, /activity event feed, notification surfaces, and ambient bot-driven market events — all client-side.
 > Items: 65 · Done: 0
 
 ## Wave-tagged
-- [ ] ACT-001 (W2) Toast stack shows at most 3 toasts with a "+N more" overflow counter
-- [ ] ACT-002 (W2) Toasts auto-dismiss with a visible progress bar that pauses on hover
-- [ ] ACT-003 (W2) Every toast has a close button for immediate manual dismissal
-- [ ] ACT-004 (W2) /activity page lists all recorded events newest-first
-- [ ] ACT-005 (W2) Feed timestamps render relatively ("2m ago") and update live without reload
-- [ ] ACT-006 (W2) Hovering a relative timestamp reveals the absolute date and time
-- [ ] ACT-007 (W2) Each event type (purchase, like, offer, listing) has a distinct icon
-- [ ] ACT-008 (W2) Each event type has a distinct accent color on its feed row and toast
-- [ ] ACT-009 (W2) Filter chips on /activity narrow the feed by event type
-- [ ] ACT-010 (W2) Filter chips show a live count badge of matching events
-- [ ] ACT-011 (W2) "Your events" vs "All events" toggle scopes the feed to your wallet's actions
-- [ ] ACT-012 (W2) Empty feed shows an illustration and a CTA to browse the collection
-- [ ] ACT-013 (W2) Completed purchases append a feed entry with bird, price, and buyer
-- [ ] ACT-014 (W2) Likes and unlikes append feed entries naming the bird
-- [ ] ACT-015 (W2) Offers made, accepted, and declined each append distinct feed entries
-- [ ] ACT-016 (W2) Listings and delistings append feed entries with the asking price
-- [ ] ACT-017 (W2) Wallet connect and disconnect are logged as your-events entries
-- [ ] ACT-018 (W2) Clicking a feed entry navigates to the referenced bird's detail page
-- [ ] ACT-019 (W2) Activity history persists across page reloads
-- [ ] ACT-020 (W2) Clear-history action empties the feed after a confirmation dialog
+- [x] ACT-001 (W2) Toast stack shows at most 3 toasts with a "+N more" overflow counter <!-- done:2026-07-29 W2 -->
+- [x] ACT-002 (W2) Toasts auto-dismiss with a visible progress bar that pauses on hover <!-- done:2026-07-29 W2 -->
+- [x] ACT-003 (W2) Every toast has a close button for immediate manual dismissal <!-- done:2026-07-29 W2 -->
+- [x] ACT-004 (W2) /activity page lists all recorded events newest-first <!-- done:2026-07-29 W2 -->
+- [x] ACT-005 (W2) Feed timestamps render relatively ("2m ago") and update live without reload <!-- done:2026-07-29 W2 -->
+- [x] ACT-006 (W2) Hovering a relative timestamp reveals the absolute date and time <!-- done:2026-07-29 W2 -->
+- [x] ACT-007 (W2) Each event type (purchase, like, offer, listing) has a distinct icon <!-- done:2026-07-29 W2 -->
+- [x] ACT-008 (W2) Each event type has a distinct accent color on its feed row and toast <!-- done:2026-07-29 W2 -->
+- [x] ACT-009 (W2) Filter chips on /activity narrow the feed by event type <!-- done:2026-07-29 W2 -->
+- [x] ACT-010 (W2) Filter chips show a live count badge of matching events <!-- done:2026-07-29 W2 -->
+- [x] ACT-011 (W2) "Your events" vs "All events" toggle scopes the feed to your wallet's actions <!-- done:2026-07-29 W2 -->
+- [x] ACT-012 (W2) Empty feed shows an illustration and a CTA to browse the collection <!-- done:2026-07-29 W2 -->
+- [x] ACT-013 (W2) Completed purchases append a feed entry with bird, price, and buyer <!-- done:2026-07-29 W2 -->
+- [x] ACT-014 (W2) Likes and unlikes append feed entries naming the bird <!-- done:2026-07-29 W2 -->
+- [x] ACT-015 (W2) Offers made, accepted, and declined each append distinct feed entries <!-- done:2026-07-29 W2 -->
+- [x] ACT-016 (W2) Listings and delistings append feed entries with the asking price <!-- done:2026-07-29 W2 -->
+- [x] ACT-017 (W2) Wallet connect and disconnect are logged as your-events entries <!-- done:2026-07-29 W2 -->
+- [x] ACT-018 (W2) Clicking a feed entry navigates to the referenced bird's detail page <!-- done:2026-07-29 W2 -->
+- [x] ACT-019 (W2) Activity history persists across page reloads <!-- done:2026-07-29 W2 -->
+- [x] ACT-020 (W2) Clear-history action empties the feed after a confirmation dialog <!-- done:2026-07-29 W2 -->
 - [ ] ACT-021 (W5) Ambient bot market events generate on a deterministic seeded schedule and feed the page
 - [ ] ACT-022 (W5) Bot purchase events appear in the feed with bot persona names and prices
 - [ ] ACT-023 (W5) Bot list and delist events appear and update the affected bird's grid price

@@ -9,11 +9,11 @@
 - [x] FX-003 (W1) Staggered grid entrance animation when filters change <!-- done:2026-07-29 W1 -->
 - [x] FX-004 (W1) Card hover 3D tilt that follows the cursor position <!-- done:2026-07-29 W1 -->
 - [x] FX-005 (W1) Lightbox open/close spring animation <!-- done:2026-07-29 W1 -->
-- [ ] FX-006 (W2) Confetti burst on confirmed purchase
-- [ ] FX-007 (W2) Balance number ticker animation whenever the balance changes
-- [ ] FX-008 (W2) Purchase-modal step transitions sliding between steps
-- [ ] FX-009 (W2) Buy button press micro-scale with success checkmark morph
-- [ ] FX-010 (W2) Toast slide-in spring choreography with stacked offsets
+- [x] FX-006 (W2) Confetti burst on confirmed purchase <!-- done:2026-07-29 W2 -->
+- [x] FX-007 (W2) Balance number ticker animation whenever the balance changes <!-- done:2026-07-29 W2 -->
+- [x] FX-008 (W2) Purchase-modal step transitions sliding between steps <!-- done:2026-07-29 W2 -->
+- [x] FX-009 (W2) Buy button press micro-scale with success checkmark morph <!-- done:2026-07-29 W2 -->
+- [x] FX-010 (W2) Toast slide-in spring choreography with stacked offsets <!-- done:2026-07-29 W2 -->
 - [ ] FX-011 (W6) Theme-switch crossfade between light and dark
 - [ ] FX-012 (W6) Settings toggle micro-animations on every switch and checkbox
 - [ ] FX-013 (W6) Accent-color change ripple preview radiating from the picker

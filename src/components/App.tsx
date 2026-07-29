@@ -11,14 +11,18 @@ import {
 import ErrorBoundary from "./ErrorBoundary";
 import DebugPanel from "./DebugPanel";
 import ShortcutsModal from "./ShortcutsModal";
+import ToastStack from "./ToastStack";
+import WalletModal from "./WalletModal";
+import WalletPanel from "./WalletPanel";
 import { BUILD_INFO } from "../data/buildInfo";
 import { REPO_URL } from "../data/links";
-import { useToastMessage, showToast } from "../stores/toast";
+import { useWalletStore } from "../stores/wallet";
 import "./App.css";
 
 const HomePage = lazy(() => import("../pages/HomePage"));
 const MarketplacePage = lazy(() => import("../pages/MarketplacePage"));
 const ItemPage = lazy(() => import("../pages/ItemPage"));
+const ActivityPage = lazy(() => import("../pages/ActivityPage"));
 const AboutDemoPage = lazy(() => import("../pages/AboutDemoPage"));
 const ChangelogPage = lazy(() => import("../pages/ChangelogPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
@@ -43,10 +47,11 @@ function SkeletonGrid() {
 
 function Shell() {
   const location = useLocation();
-  const toast = useToastMessage();
   const [params] = useSearchParams();
   const debug = params.get("debug") === "1";
   const [shortcuts, setShortcuts] = useState(false);
+  const [walletModal, setWalletModal] = useState(false);
+  const connected = useWalletStore((s) => s.connectedId != null);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -75,19 +80,22 @@ function Shell() {
         </Link>
         <nav className="nav__links">
           <NavLink to="/market">Marketplace</NavLink>
+          <NavLink to="/activity">Activity</NavLink>
           <NavLink to="/about-demo">About</NavLink>
           <a href={REPO_URL} target="_blank" rel="noreferrer">
             GitHub ↗
           </a>
         </nav>
-        <button
-          className="btn btn--ghost"
-          onClick={() =>
-            showToast("Demo mode — the simulated wallet arrives in Wave 2")
-          }
-        >
-          Connect Wallet
-        </button>
+        {connected ? (
+          <WalletPanel />
+        ) : (
+          <button
+            className="btn btn--ghost"
+            onClick={() => setWalletModal(true)}
+          >
+            Connect Wallet
+          </button>
+        )}
       </header>
 
       <div className="demo-strip">
@@ -102,6 +110,7 @@ function Shell() {
               <Route path="/" element={<HomePage />} />
               <Route path="/market" element={<MarketplacePage />} />
               <Route path="/item/:tokenId" element={<ItemPage />} />
+              <Route path="/activity" element={<ActivityPage />} />
               <Route path="/about-demo" element={<AboutDemoPage />} />
               <Route path="/changelog" element={<ChangelogPage />} />
               <Route path="*" element={<NotFoundPage />} />
@@ -124,10 +133,9 @@ function Shell() {
         </p>
       </footer>
 
-      <div className={`toast ${toast ? "is-visible" : ""}`} role="status">
-        {toast}
-      </div>
+      <ToastStack />
 
+      {walletModal && <WalletModal onClose={() => setWalletModal(false)} />}
       {shortcuts && <ShortcutsModal onClose={() => setShortcuts(false)} />}
       {debug && <DebugPanel />}
     </div>

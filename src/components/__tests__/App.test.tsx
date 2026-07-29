@@ -17,9 +17,12 @@ import {
 import userEvent from "@testing-library/user-event";
 import App from "../App";
 import { BIRDZ } from "../../data/birdz";
+import { useActivityStore } from "../../stores/activity";
 import { useCollectionStore } from "../../stores/collection";
 import { useFavoritesStore } from "../../stores/favorites";
 import { useRecentStore } from "../../stores/recent";
+import { useToastStore } from "../../stores/toast";
+import { PERSONAS, useWalletStore } from "../../stores/wallet";
 
 function renderAt(hash: string) {
   window.location.hash = hash;
@@ -32,6 +35,16 @@ beforeEach(() => {
   useFavoritesStore.getState().reset();
   useCollectionStore.getState().reset();
   useRecentStore.getState().reset();
+  useToastStore.getState().clearAll();
+  useActivityStore.setState({ events: [], nextId: 1 });
+  useWalletStore.setState({
+    connectedId: null,
+    balances: {},
+    listings: {},
+    offers: [],
+    history: [],
+    faucetClaims: {},
+  });
 });
 
 afterEach(() => {
@@ -141,16 +154,36 @@ describe("item route", () => {
     ).toBeDisabled();
   });
 
-  it("simulated buy records ownership and shows the owned badge", async () => {
+  it("prompts to connect when buying without a wallet", async () => {
+    const user = userEvent.setup();
+    renderAt("#/item/0003");
+    const buyBtn = await screen.findByRole("button", {
+      name: /connect to buy/i,
+    });
+    await user.click(buyBtn);
+    expect(
+      await screen.findByRole("dialog", { name: /connect a demo wallet/i })
+    ).toBeInTheDocument();
+  });
+
+  it("connected wallet sees Buy now and can open the purchase review", async () => {
+    useWalletStore.getState().connect(PERSONAS[0].id);
     const user = userEvent.setup();
     renderAt("#/item/0003");
     const buyBtn = await screen.findByRole("button", { name: /buy now/i });
     await user.click(buyBtn);
-    expect(useCollectionStore.getState().owned[3]).toBeDefined();
-    expect(await screen.findByText("Owned by you")).toBeInTheDocument();
+    expect(await screen.findByText(/review purchase/i)).toBeInTheDocument();
+    expect(screen.getByText(/est\. gas fee/i)).toBeInTheDocument();
+  });
+
+  it("owned birds offer List for sale instead of Buy", async () => {
+    useWalletStore.getState().connect(PERSONAS[0].id);
+    useCollectionStore.getState().buy(3, 2.8);
+    renderAt("#/item/0003");
     expect(
-      screen.getByRole("button", { name: /in your collection/i })
-    ).toBeDisabled();
+      await screen.findByRole("button", { name: /list for sale/i })
+    ).toBeInTheDocument();
+    expect(screen.getByText("Owned by you")).toBeInTheDocument();
   });
 
   it("records the visit in recently-viewed", async () => {
@@ -169,7 +202,61 @@ describe("404 route", () => {
   });
 });
 
-describe("toast", () => {
+describe("wallet connect flow", () => {
+  it("connect modal lists 3 personas; choosing one shows the balance pill", async () => {
+    const user = userEvent.setup();
+    renderAt("#/");
+    const btn = await screen.findByRole("button", { name: /connect wallet/i });
+    await user.click(btn);
+    const dialog = await screen.findByRole("dialog", {
+      name: /connect a demo wallet/i,
+    });
+    expect(within(dialog).getAllByRole("button")).toHaveLength(4); // 3 personas + cancel
+    await user.click(within(dialog).getByText(PERSONAS[0].name));
+    expect(useWalletStore.getState().connectedId).toBe(PERSONAS[0].id);
+    expect(
+      await screen.findByLabelText(/balance 10\.0000 eth/i)
+    ).toBeInTheDocument();
+    // Connected toast lands in the stack, and the connect event is logged.
+    expect(screen.getByText(/wallet connected/i)).toBeInTheDocument();
+    expect(useActivityStore.getState().events[0].type).toBe("connect");
+  });
+});
+
+describe("activity page", () => {
+  it("shows an empty state with a browse CTA when nothing has happened", async () => {
+    renderAt("#/activity");
+    expect(await screen.findByText(/no activity yet/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /browse the collection/i })
+    ).toBeInTheDocument();
+  });
+
+  it("lists events with type filters and counts", async () => {
+    useActivityStore.getState().log({
+      type: "purchase",
+      birdId: 1,
+      price: 4.2,
+      who: "you",
+    });
+    useActivityStore.getState().log({
+      type: "like",
+      birdId: 2,
+      price: null,
+      who: "you",
+    });
+    renderAt("#/activity");
+    expect(await screen.findByText("Celestial Songbird")).toBeInTheDocument();
+    const likesTab = screen.getByRole("tab", { name: /likes/i });
+    expect(likesTab).toHaveTextContent("1");
+    const user = userEvent.setup();
+    await user.click(likesTab);
+    expect(screen.queryByText("Celestial Songbird")).not.toBeInTheDocument();
+    expect(screen.getByText("Neon Nightjar")).toBeInTheDocument();
+  });
+});
+
+describe("toast stack", () => {
   beforeEach(() => {
     vi.useFakeTimers();
   });
@@ -177,19 +264,27 @@ describe("toast", () => {
     vi.useRealTimers();
   });
 
-  it("appears on Connect Wallet and auto-dismisses", async () => {
-    window.location.hash = "#/";
-    render(<App />);
-    const btn = await vi.waitFor(() => {
-      const b = screen.getByRole("button", { name: /connect wallet/i });
-      return b;
-    });
-    fireEvent.click(btn);
-    const toast = screen.getByRole("status");
-    expect(toast).toHaveClass("is-visible");
+  it("shows at most 3 toasts with an overflow counter and auto-dismisses", () => {
+    renderAt("#/");
     act(() => {
-      vi.advanceTimersByTime(3000);
+      for (let i = 1; i <= 5; i++) {
+        useToastStore.getState().show(`toast ${i}`);
+      }
     });
-    expect(toast).not.toHaveClass("is-visible");
+    expect(screen.getAllByRole("status")).toHaveLength(3);
+    expect(screen.getByText("+2 more")).toBeInTheDocument();
+    act(() => {
+      vi.advanceTimersByTime(3300);
+    });
+    expect(screen.queryAllByRole("status")).toHaveLength(0);
+  });
+
+  it("close button dismisses a toast immediately", () => {
+    renderAt("#/");
+    act(() => {
+      useToastStore.getState().show("bye");
+    });
+    fireEvent.click(screen.getByRole("button", { name: /dismiss/i }));
+    expect(screen.queryByText("bye")).not.toBeInTheDocument();
   });
 });
